@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShredHead Swipe</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://hammerjs.github.io/dist/hammer.min.css">
+    <link rel="stylesheet" href="static/main-home.css">
+</head>
+
+<body>
+    <!-- Menu bar -->
+    <div class="menu">
+        <div class="menu-title">ShredHead Swipe</div>
+        <div class="menu-options">
+            <div class="menu-option">Profile</div>
+            <div class="menu-option">Settings</div>
+        </div>
+    </div>
+
+    <!-- Loading screen container -->
+    <div id="loading-screen" class="loading-screen">
+        <iframe src="loadingScreen" frameborder="0"></iframe>
+    </div>
+
+    <!-- Main content container -->
+    <div id="main-content" class="main-content">
+        <!-- Container for the cards -->
+        <div class="card-container">
+            <!-- Card elements will be dynamically added here -->
+        </div>
+
+        <!-- Like and dislike counts (swapped positioning) -->
+        <div class="like-dislike-count">
+            <p>Disliked: <span id="dislikeCount">0</span></p>
+            <p>Liked: <span id="likeCount">0</span></p>
+        </div>
+    </div>
+
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <script>
+        // Function to fade in the main content
+        function fadeInMainContent() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.display = 'block';
+            mainContent.style.animation = 'fadeIn 1s';
+            mainContent.style.opacity = '1';
+        }
+
+        // Show the loading screen initially and hide it after a delay
+        const loadingScreen = document.getElementById('loading-screen');
+        const mainContent = document.getElementById('main-content');
+
+        setTimeout(() => {
+            loadingScreen.style.opacity = '0'; // Fading out the loading screen
+            mainContent.style.opacity = '0'; // Initially hide the main content
+            setTimeout(() => {
+                loadingScreen.style.display = 'none'; // Hide the loading screen
+                fadeInMainContent(); // Fade in the main content
+            }, 1000); // Adjust the delay as needed
+        }, 5000);
+
+        // Rest of your JavaScript code
+        const cardContainer = document.querySelector('.card-container');
+        const dislikeCount = document.getElementById('dislikeCount');
+        const likeCount = document.getElementById('likeCount');
+        let dislikeCounter = 0;
+        let likeCounter = 0;
+        const initialCardCount = 10;
+        const cards = [];
+        let isLoaded = false;
+
+        // Function to handle the falling animation and remove the card
+        function animateCardFallAndRemove(card) {
+            card.style.transform = 'translateY(200%)';
+            card.style.opacity = 0;
+            setTimeout(() => {
+                card.remove();
+            }, 200);
+        }
+
+        // Function to create a new card with a random biker image and skill
+        function createCard() {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            if (isLoaded) {
+                loadCard(card);
+            }
+
+            cardContainer.appendChild(card);
+
+            // Function to create a card after the iframe is loaded
+            function loadCard(card) {
+                // Create a loading placeholder
+                const loadingPlaceholder = document.createElement('div');
+                loadingPlaceholder.classList.add('loading-placeholder');
+                loadingPlaceholder.innerHTML = 'Loading...';
+
+                card.appendChild(loadingPlaceholder);
+
+                // Create a hidden image element to ensure it's fully loaded before displaying the card
+                const hiddenImage = new Image();
+                hiddenImage.src = `https://source.unsplash.com/random/320x420?biker=${Math.random()}`;
+                hiddenImage.onload = () => {
+                    card.style.backgroundImage = `url(${hiddenImage.src})`;
+
+                    const skill = Math.floor(Math.random() * 100);
+                    card.innerHTML = `
+                        <div class="card-front">
+                            <p class="statistic">Skill: ${skill}</p>
+                        </div>
+                    `;
+
+                    // Remove the loading placeholder
+                    loadingPlaceholder.remove();
+
+                    const mc = new Hammer(card);
+                    mc.get('pan').set({
+                        direction: Hammer.DIRECTION_HORIZONTAL
+                    });
+
+                    mc.on('pan', function (e) {
+                        if (e.isFinal) {
+                            if (e.deltaX > 50) {
+                                // Swiped right (liked)
+                                animateCardFallAndRemove(card);
+                                likeCounter++;
+                                likeCount.textContent = likeCounter;
+                                addCardToContainer();
+                            } else if (e.deltaX < -50) {
+                                // Swiped left (disliked)
+                                animateCardFallAndRemove(card);
+                                dislikeCounter++;
+                                dislikeCount.textContent = dislikeCounter;
+                                addCardToContainer();
+                            } else {
+                                card.style.transform = 'none';
+                            }
+                        } else {
+                            card.style.transform = 'translateX(' + e.deltaX + 'px) rotate(' + e.deltaX *
+                                0.2 + 'deg)';
+                        }
+                    });
+
+                    cards.push(card);
+
+                    // If there are more than the initial cards, remove the oldest one
+                    if (cards.length > initialCardCount) {
+                        const removedCard = cards.shift();
+                        removedCard.remove();
+                    }
+                };
+            }
+
+            isLoaded = true;
+        }
+
+        // Function to add a card to the container
+        function addCardToContainer() {
+            createCard();
+        }
+
+        // Create and add the initial cards
+        for (let i = 0; i < initialCardCount; i++) {
+            addCardToContainer();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="static/loading-screen.css">
+
+<div id="loop" class="center"></div>
+<div id="bike-wrapper" class="center">
+    <div id="bike" class="centerBike"></div>
+</div>
+<script>
+    // Wait for 5 seconds and then fade out
+    setTimeout(() => {
+        const loadingScreen = document.querySelector('.loading-screen');
+        loadingScreen.style.animation = 'fadeOut 1s';
+        loadingScreen.style.animationFillMode = 'forwards';
+        setTimeout(() => {
+            // Redirect to main.html after fade-out animation
+            window.location.href = '/home';
+        }, 1000); // Redirect after 1 second (adjust as needed)
+    }, 5000); // Wait for 5 seconds
+</script>
+</html>
