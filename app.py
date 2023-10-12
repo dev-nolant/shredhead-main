@@ -14,4 +14,3 @@ def loadingScreen():
     return render_template('loadingScreen.html')
 
 
-app.run(debug=True)
