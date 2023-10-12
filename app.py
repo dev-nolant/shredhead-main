@@ -41,4 +41,3 @@ def custom_pages(page):
     return render_template(page)
 
 
-app.run(debug=True)
