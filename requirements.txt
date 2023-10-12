@@ -6,6 +6,7 @@ Flask-Session==0.4.0
 flask-sock==0.5.2
 Flask-SocketIO==5.1.2
 Flask-WTF==1.0.1
+Werkzeug==2.3.7
 numpy==1.22.4
 requests==2.27.1
 gunicorn==21.2.0
