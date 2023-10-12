@@ -1,0 +1,170 @@
+ /* Global styles */
+ body {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     height: 100vh;
+     margin: 0;
+     background: #1d2026;
+     font-family: 'Poppins', sans-serif;
+     color: #fff;
+ }
+
+ /* Menu styles */
+ .menu {
+     /*background: rgb(255, 0, 0);*/
+     width: 100%;
+     padding: 20px 0;
+     display: flex;
+     justify-content: space-between;
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+ }
+
+ .menu-title {
+     font-size: 24px;
+     font-weight: 600;
+     color: #62CD32;
+     margin-left: 20px;
+     cursor: pointer;
+     position: relative;
+     overflow: hidden;
+ }
+
+ .menu-title:hover:after {
+     content: " ";
+     position: absolute;
+     top: -50%;
+     left: -50%;
+     right: -50%;
+     bottom: -50%;
+     background: radial-gradient(circle, rgba(98, 205, 50, .123) 5%, transparent);
+     animation: spin 3s linear infinite;
+ }
+
+ @keyframes spin {
+     0% {
+         transform: rotate(0deg);
+     }
+
+     100% {
+         transform: rotate(360deg);
+     }
+ }
+
+ .menu-options {
+     display: flex;
+     gap: 20px;
+     margin-right: 20px;
+ }
+
+ .menu-option {
+     font-size: 18px;
+     font-weight: 500;
+     color: #fff;
+     cursor: pointer;
+     transition: color 0.2s;
+ }
+
+ .menu-option:hover {
+     color: #009c49;
+ }
+
+ /* Loading screen styles */
+ .loading-screen {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(98, 205, 50, 1);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 2;
+     transition: opacity 1s;
+ }
+
+ .loading-screen iframe {
+     width: 100%;
+     height: 100%;
+ }
+
+ /* Main content styles with fade-in animation */
+ .main-content {
+     display: none;
+     position: relative;
+     text-align: center;
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+         transform: translateY(10px);
+     }
+
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ /* Tinder card styles */
+ .card-container {
+     position: relative;
+     width: 320px;
+     height: 420px;
+     margin: 0 auto;
+     animation: moveIn 1s;
+     background: #fff;
+     border-radius: 8px;
+     box-shadow: 0 4px 8px rgba(238, 241, 237, 0.396);
+ }
+
+ .card {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+     border-radius: 8px;
+     cursor: pointer;
+     transition: transform 0.2s, opacity 0.2s;
+ }
+
+ .loading-placeholder {
+     width: 100%;
+     height: 100%;
+     background: #f64c7148;
+     color: #242582;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .card-front {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: flex-end;
+     background: rgba(0, 0, 0, 0.6);
+     width: 100%;
+     height: 100%;
+ }
+
+ .statistic {
+     padding: 10px;
+     border-radius: 20px;
+     font-size: 18px;
+     font-weight: 500;
+     color: white;
+     margin-bottom: 20px;
+ }
+
+ .like-dislike-count {
+     display: flex;
+     justify-content: space-between;
+     font-size: 20px;
+     color: #F64C72;
+     margin: 20px 0;
+ }
